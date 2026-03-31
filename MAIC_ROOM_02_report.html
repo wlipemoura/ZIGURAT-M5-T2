@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>IFC Report — MAIC_ROOM_02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{--bg:#0b0f1a;--surface:#111827;--surface2:#1a2235;--border:#1e2d45;--text:#e8eeff;--muted:#6b7a99;--pass:#00e5a0;--fail:#ff4d6d;--accent:#4d9fff;--radius:14px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35;}
+  .wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:48px 24px 80px;}
+  .header{margin-bottom:52px;animation:fadeUp .5s ease both;}
+  .badge-ifc{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.5px;margin-bottom:18px;}
+  .badge-ifc::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;background:linear-gradient(135deg,#e8eeff 0%,#6b9fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .subtitle{color:var(--muted);font-size:14px;margin-top:10px;font-weight:300;}
+  .meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.5px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:40px;animation:fadeUp .5s .1s ease both;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px 24px 20px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+  .card:hover{border-color:#2a3d5e;transform:translateY(-2px);}
+  .card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent,var(--accent));}
+  .card-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .card-value{font-family:'Syne',sans-serif;font-size:42px;font-weight:700;line-height:1;}
+  .card-sub{font-size:12px;color:var(--muted);margin-top:6px;}
+  .card-pass{--card-accent:var(--pass);} .card-fail{--card-accent:var(--fail);} .card-total{--card-accent:var(--accent);} .card-uni{--card-accent:#f5a623;}
+  .two-col{display:grid;grid-template-columns:1fr 1.7fr;gap:24px;margin-bottom:24px;align-items:start;animation:fadeUp .5s .2s ease both;}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
+  .panel-title{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+  .donut-svg{width:100%;max-width:175px;display:block;margin:0 auto 20px;}
+  .donut-legend{display:flex;justify-content:center;gap:20px;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:13px;}
+  .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .reason-row{margin-bottom:18px;} .reason-meta{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+  .reason-badge{font-size:10px;font-weight:700;letter-spacing:1.5px;padding:2px 8px;border-radius:100px;flex-shrink:0;}
+  .reason-label{font-size:13px;color:var(--text);flex:1;} .reason-count{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);}
+  .reason-bar-bg{background:var(--surface2);border-radius:100px;height:5px;overflow:hidden;}
+  .reason-bar-fill{height:100%;border-radius:100px;}
+  .orient-panel{animation:fadeUp .5s .25s ease both;margin-bottom:24px;}
+  .orient-row{margin-bottom:14px;} .orient-meta{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+  .orient-label{font-size:14px;color:var(--text);flex:1;font-weight:500;}
+  .orient-count{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);}
+  .table-panel{animation:fadeUp .5s .3s ease both;}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead tr{background:var(--surface2);}
+  th{padding:12px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tbody tr{transition:background .15s;} tbody tr:hover{background:var(--surface2);}
+  .mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);}
+  .pill{display:inline-block;padding:2px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;}
+  .pill-pass{background:#00e5a018;color:var(--pass);} .pill-fail{background:#ff4d6d18;color:var(--fail);}
+  .reason-text{font-size:12px;color:var(--muted);max-width:260px;}
+  .overhang-cell{font-family:'DM Mono',monospace;font-size:12px;}
+  .footer{text-align:center;color:var(--muted);font-size:12px;margin-top:60px;padding-top:24px;border-top:1px solid var(--border);letter-spacing:.5px;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="badge-ifc">IFC · MAIC_ROOM_02</div>
+    <h1>Compliance<br>Report</h1>
+    <p class="subtitle">Unistrut&#x2013;Beam Pairing Analysis &middot; Overhang Rule Evaluation</p>
+    <p class="meta">Generated 31 Mar 2026  23:03</p>
+  </div>
+  <div class="cards">
+    <div class="card card-uni">
+      <div class="card-label">Total Pairs</div>
+      <div class="card-value" style="color:#f5a623">131</div>
+      <div class="card-sub">89 perpendicular · 42 parallel</div>
+    </div>
+    <div class="card card-total">
+      <div class="card-label">Total Checks</div>
+      <div class="card-value">89</div>
+      <div class="card-sub">Perpendicular pairs evaluated for overhang rule</div>
+    </div>
+    <div class="card card-pass">
+      <div class="card-label">Pass</div>
+      <div class="card-value" style="color:var(--pass)">18</div>
+      <div class="card-sub">20.2% of perpendicular pairs</div>
+    </div>
+    <div class="card card-fail">
+      <div class="card-label">Fail</div>
+      <div class="card-value" style="color:var(--fail)">71</div>
+      <div class="card-sub">79.8% of perpendicular pairs</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">Compliance Rate · Perpendicular Pairs</div>
+      
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="donut-svg">
+      <defs>
+        <filter id="gp"><feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="gf"><feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#1e2530" stroke-width="22"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#ff4d6d" stroke-width="22"
+              stroke-dasharray="357.01 452.39" stroke-dashoffset="361.01"
+              stroke-linecap="round" filter="url(#gf)"
+              transform="rotate(-90 100 100)"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#00e5a0" stroke-width="22"
+              stroke-dasharray="87.38 452.39" stroke-dashoffset="0"
+              stroke-linecap="round" filter="url(#gp)"
+              transform="rotate(-90 100 100)"/>
+      <text x="100" y="93" text-anchor="middle" font-size="28" font-weight="700"
+            fill="#f0f4ff" font-family="'DM Mono',monospace">20.2%</text>
+      <text x="100" y="113" text-anchor="middle" font-size="10" fill="#6b7a99"
+            font-family="'DM Sans',sans-serif" letter-spacing="2">COMPLIANT</text>
+    </svg>
+      <div class="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--pass)"></div><span>18 Pass</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--fail)"></div><span>71 Fail</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Breakdown by Rule · Perpendicular Pairs</div>
+      
+        <div class="reason-row">
+          <div class="reason-meta">
+            <span class="reason-badge" style="background:#ff4d6d22;color:#ff4d6d">FAIL</span>
+            <span class="reason-label">Overhang Min Outside 50 To 90 Fail</span>
+            <span class="reason-count">37</span>
+          </div>
+          <div class="reason-bar-bg">
+            <div class="reason-bar-fill" style="width:42%;background:#ff4d6d"></div>
+          </div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-meta">
+            <span class="reason-badge" style="background:#ff4d6d22;color:#ff4d6d">FAIL</span>
+            <span class="reason-label">No Overhang And Not Beams Both Sides Fail</span>
+            <span class="reason-count">34</span>
+          </div>
+          <div class="reason-bar-bg">
+            <div class="reason-bar-fill" style="width:38%;background:#ff4d6d"></div>
+          </div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-meta">
+            <span class="reason-badge" style="background:#00e5a022;color:#00e5a0">PASS</span>
+            <span class="reason-label">Overhang Min Between 50 And 90 Pass</span>
+            <span class="reason-count">15</span>
+          </div>
+          <div class="reason-bar-bg">
+            <div class="reason-bar-fill" style="width:17%;background:#00e5a0"></div>
+          </div>
+        </div>
+        <div class="reason-row">
+          <div class="reason-meta">
+            <span class="reason-badge" style="background:#00e5a022;color:#00e5a0">PASS</span>
+            <span class="reason-label">No Overhang But Beams Both Sides Pass</span>
+            <span class="reason-count">3</span>
+          </div>
+          <div class="reason-bar-bg">
+            <div class="reason-bar-fill" style="width:3%;background:#00e5a0"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="panel orient-panel">
+    <div class="panel-title">Pair Orientation Distribution</div>
+    <div class="orient-row">
+      <div class="orient-meta">
+        <span class="orient-label">&#x22A5; Perpendicular</span>
+        <span class="orient-count">89</span>
+      </div>
+      <div class="reason-bar-bg">
+        <div class="reason-bar-fill" style="width:68%;background:#4d9fff"></div>
+      </div>
+    </div>
+    <div class="orient-row">
+      <div class="orient-meta">
+        <span class="orient-label">&#x2225; Parallel</span>
+        <span class="orient-count">42</span>
+      </div>
+      <div class="reason-bar-bg">
+        <div class="reason-bar-fill" style="width:32%;background:#a78bfa"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel table-panel">
+    <div class="panel-title" style="margin-bottom:18px">Elements Summary</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Unistrut Tag</th><th>Beam Tag</th><th>Orientation</th>
+            <th>Min Overhang</th><th>Left / Right (mm)</th><th>Status</th><th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td class="mono">8710670</td>
+          <td class="mono">6183124</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">3650.2 / 0.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10181927</td>
+          <td class="mono">6183136</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">329.5 / 0.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10180441</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>2205.8 mm</td>
+          <td class="overhang-cell">3019.0 / 2205.8</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10147929</td>
+          <td class="mono">6183133</td>
+          <td>PERPENDICULAR</td>
+          <td>444.7 mm</td>
+          <td class="overhang-cell">597.3 / 444.7</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10023533</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>155.0 mm</td>
+          <td class="overhang-cell">155.0 / 545.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10023184</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>155.0 mm</td>
+          <td class="overhang-cell">155.0 / 545.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9985541</td>
+          <td class="mono">6183191</td>
+          <td>PERPENDICULAR</td>
+          <td>153.0 mm</td>
+          <td class="overhang-cell">447.0 / 153.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9977927</td>
+          <td class="mono">6183180</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">800.0 / 0.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9975468</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-110.0 mm</td>
+          <td class="overhang-cell">2900.0 / -110.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9924584</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9924488</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9921754</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-110.0 mm</td>
+          <td class="overhang-cell">2910.0 / -110.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9921544</td>
+          <td class="mono">7134029</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">740.0 / 0.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9819102</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>95.0 mm</td>
+          <td class="overhang-cell">1755.0 / 95.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9818544</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>95.0 mm</td>
+          <td class="overhang-cell">1755.0 / 95.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10568801</td>
+          <td class="mono">6183137</td>
+          <td>PERPENDICULAR</td>
+          <td>-163.6 mm</td>
+          <td class="overhang-cell">-163.6 / 2963.6</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10182174</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>5.3 mm</td>
+          <td class="overhang-cell">1494.7 / 5.3</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10186739</td>
+          <td class="mono">6543765</td>
+          <td>PERPENDICULAR</td>
+          <td>-79.7 mm</td>
+          <td class="overhang-cell">-79.7 / -79.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10187525</td>
+          <td class="mono">7134272</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">0.0 / 915.6</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10237487</td>
+          <td class="mono">5233880</td>
+          <td>PERPENDICULAR</td>
+          <td>0.0 mm</td>
+          <td class="overhang-cell">0.0 / 366.5</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10568740</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>-119.0 mm</td>
+          <td class="overhang-cell">-119.0 / 2919.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10568739</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>-119.0 mm</td>
+          <td class="overhang-cell">-119.0 / 2919.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10568737</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10568736</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10447110</td>
+          <td class="mono">4999239</td>
+          <td>PERPENDICULAR</td>
+          <td>-152.4 mm</td>
+          <td class="overhang-cell">2852.6 / -152.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10435582</td>
+          <td class="mono">4999189</td>
+          <td>PERPENDICULAR</td>
+          <td>-44.2 mm</td>
+          <td class="overhang-cell">1316.2 / -44.2</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10435466</td>
+          <td class="mono">4999189</td>
+          <td>PERPENDICULAR</td>
+          <td>-44.2 mm</td>
+          <td class="overhang-cell">1316.2 / -44.2</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9813480</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-110.0 mm</td>
+          <td class="overhang-cell">1610.0 / -110.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10435113</td>
+          <td class="mono">9568740</td>
+          <td>PERPENDICULAR</td>
+          <td>36.5 mm</td>
+          <td class="overhang-cell">36.5 / 688.8</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10434509</td>
+          <td class="mono">7050840</td>
+          <td>PERPENDICULAR</td>
+          <td>-107.5 mm</td>
+          <td class="overhang-cell">457.5 / -107.5</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10430995</td>
+          <td class="mono">4999189</td>
+          <td>PERPENDICULAR</td>
+          <td>26.4 mm</td>
+          <td class="overhang-cell">2373.6 / 26.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10329672</td>
+          <td class="mono">9177978</td>
+          <td>PERPENDICULAR</td>
+          <td>98.0 mm</td>
+          <td class="overhang-cell">713.3 / 98.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10329424</td>
+          <td class="mono">5616350</td>
+          <td>PERPENDICULAR</td>
+          <td>-103.9 mm</td>
+          <td class="overhang-cell">2880.8 / -103.9</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10329164</td>
+          <td class="mono">5616350</td>
+          <td>PERPENDICULAR</td>
+          <td>-103.9 mm</td>
+          <td class="overhang-cell">2880.8 / -103.9</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10313755</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 682.9</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10313366</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>618.0 mm</td>
+          <td class="overhang-cell">618.0 / 629.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10434809</td>
+          <td class="mono">9568740</td>
+          <td>PERPENDICULAR</td>
+          <td>36.5 mm</td>
+          <td class="overhang-cell">36.5 / 1104.3</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9800364</td>
+          <td class="mono">6183128</td>
+          <td>PERPENDICULAR</td>
+          <td>43.8 mm</td>
+          <td class="overhang-cell">43.8 / 356.2</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10568802</td>
+          <td class="mono">6183137</td>
+          <td>PERPENDICULAR</td>
+          <td>-163.6 mm</td>
+          <td class="overhang-cell">-163.6 / 2963.6</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8913788</td>
+          <td class="mono">5448183</td>
+          <td>PERPENDICULAR</td>
+          <td>100.3 mm</td>
+          <td class="overhang-cell">100.3 / 899.7</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8830176</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 3750.1</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8830178</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 3750.1</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8911625</td>
+          <td class="mono">4999222</td>
+          <td>PERPENDICULAR</td>
+          <td>100.0 mm</td>
+          <td class="overhang-cell">100.0 / 1000.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8912160</td>
+          <td class="mono">4999222</td>
+          <td>PERPENDICULAR</td>
+          <td>100.0 mm</td>
+          <td class="overhang-cell">100.0 / 1000.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8912371</td>
+          <td class="mono">4999222</td>
+          <td>PERPENDICULAR</td>
+          <td>100.0 mm</td>
+          <td class="overhang-cell">100.0 / 1000.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8912435</td>
+          <td class="mono">4999222</td>
+          <td>PERPENDICULAR</td>
+          <td>100.0 mm</td>
+          <td class="overhang-cell">100.0 / 1000.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8912769</td>
+          <td class="mono">4999197</td>
+          <td>PERPENDICULAR</td>
+          <td>208.7 mm</td>
+          <td class="overhang-cell">208.7 / 509.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8913694</td>
+          <td class="mono">4999197</td>
+          <td>PERPENDICULAR</td>
+          <td>208.7 mm</td>
+          <td class="overhang-cell">208.7 / 509.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8913705</td>
+          <td class="mono">5446779</td>
+          <td>PERPENDICULAR</td>
+          <td>100.0 mm</td>
+          <td class="overhang-cell">100.0 / 1000.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8915972</td>
+          <td class="mono">4999239</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 3120.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8916094</td>
+          <td class="mono">4999239</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 3120.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8917995</td>
+          <td class="mono">5594354</td>
+          <td>PERPENDICULAR</td>
+          <td>12.6 mm</td>
+          <td class="overhang-cell">12.6 / 1005.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8918156</td>
+          <td class="mono">5448180</td>
+          <td>PERPENDICULAR</td>
+          <td>110.9 mm</td>
+          <td class="overhang-cell">1855.3 / 110.9</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8714416</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-59.6 mm</td>
+          <td class="overhang-cell">2850.0 / -59.6</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8919205</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>-99.5 mm</td>
+          <td class="overhang-cell">-99.5 / 900.5</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8918933</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>659.7 mm</td>
+          <td class="overhang-cell">659.7 / 940.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8928303</td>
+          <td class="mono">5594354</td>
+          <td>PERPENDICULAR</td>
+          <td>12.6 mm</td>
+          <td class="overhang-cell">12.6 / 1005.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9619268</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>450.0 mm</td>
+          <td class="overhang-cell">450.0 / 497.1</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8712019</td>
+          <td class="mono">6183121</td>
+          <td>PERPENDICULAR</td>
+          <td>-150.0 mm</td>
+          <td class="overhang-cell">-150.0 / 2850.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8712029</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-59.6 mm</td>
+          <td class="overhang-cell">2850.0 / -59.6</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9470253</td>
+          <td class="mono">6183137</td>
+          <td>PERPENDICULAR</td>
+          <td>110.0 mm</td>
+          <td class="overhang-cell">110.0 / 2963.7</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9470049</td>
+          <td class="mono">6183137</td>
+          <td>PERPENDICULAR</td>
+          <td>10.0 mm</td>
+          <td class="overhang-cell">10.0 / 2963.7</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8927746</td>
+          <td class="mono">4999239</td>
+          <td>PERPENDICULAR</td>
+          <td>-152.4 mm</td>
+          <td class="overhang-cell">2852.6 / -152.4</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9468166</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9468341</td>
+          <td class="mono">6183131</td>
+          <td>PERPENDICULAR</td>
+          <td>-81.0 mm</td>
+          <td class="overhang-cell">-81.0 / 2881.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9467744</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>-0.0 mm</td>
+          <td class="overhang-cell">700.0 / -0.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9456505</td>
+          <td class="mono">6901023</td>
+          <td>PERPENDICULAR</td>
+          <td>45.0 mm</td>
+          <td class="overhang-cell">155.0 / 45.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9456504</td>
+          <td class="mono">6901023</td>
+          <td>PERPENDICULAR</td>
+          <td>45.0 mm</td>
+          <td class="overhang-cell">155.0 / 45.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9455887</td>
+          <td class="mono">6901029</td>
+          <td>PERPENDICULAR</td>
+          <td>45.0 mm</td>
+          <td class="overhang-cell">155.0 / 45.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9455886</td>
+          <td class="mono">6901029</td>
+          <td>PERPENDICULAR</td>
+          <td>45.0 mm</td>
+          <td class="overhang-cell">155.0 / 45.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">Overhang Min Outside 50 To 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8712898</td>
+          <td class="mono">6183121</td>
+          <td>PERPENDICULAR</td>
+          <td>-150.0 mm</td>
+          <td class="overhang-cell">-150.0 / 2850.0</td>
+          <td><span class="pill pill-fail">FAIL</span></td>
+          <td class="reason-text">No Overhang And Not Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10560895</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>67.4 mm</td>
+          <td class="overhang-cell">67.4 / 232.6</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10560467</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>67.4 mm</td>
+          <td class="overhang-cell">67.4 / 232.6</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10547644</td>
+          <td class="mono">8882796</td>
+          <td>PERPENDICULAR</td>
+          <td>61.1 mm</td>
+          <td class="overhang-cell">61.1 / 338.9</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10566162</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>73.6 mm</td>
+          <td class="overhang-cell">73.6 / 226.4</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8710670</td>
+          <td class="mono">6241976</td>
+          <td>PERPENDICULAR</td>
+          <td>-100.0 mm</td>
+          <td class="overhang-cell">-100.0 / 3750.1</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">No Overhang But Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">8713731</td>
+          <td class="mono">6183121</td>
+          <td>PERPENDICULAR</td>
+          <td>-150.0 mm</td>
+          <td class="overhang-cell">-150.0 / 2940.4</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">No Overhang But Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">9799232</td>
+          <td class="mono">6183118</td>
+          <td>PERPENDICULAR</td>
+          <td>60.8 mm</td>
+          <td class="overhang-cell">739.2 / 60.8</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">8713731</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>-59.6 mm</td>
+          <td class="overhang-cell">2850.0 / -59.6</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">No Overhang But Beams Both Sides</td>
+        </tr>
+        <tr>
+          <td class="mono">10431345</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>73.5 mm</td>
+          <td class="overhang-cell">73.5 / 2326.4</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10430995</td>
+          <td class="mono">4999190</td>
+          <td>PERPENDICULAR</td>
+          <td>73.5 mm</td>
+          <td class="overhang-cell">73.5 / 2326.4</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9799606</td>
+          <td class="mono">6183118</td>
+          <td>PERPENDICULAR</td>
+          <td>60.8 mm</td>
+          <td class="overhang-cell">739.2 / 60.8</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10181496</td>
+          <td class="mono">6183136</td>
+          <td>PERPENDICULAR</td>
+          <td>65.8 mm</td>
+          <td class="overhang-cell">65.8 / 263.7</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9468081</td>
+          <td class="mono">6183130</td>
+          <td>PERPENDICULAR</td>
+          <td>75.0 mm</td>
+          <td class="overhang-cell">625.0 / 75.0</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9816666</td>
+          <td class="mono">6183133</td>
+          <td>PERPENDICULAR</td>
+          <td>55.0 mm</td>
+          <td class="overhang-cell">745.0 / 55.0</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9816663</td>
+          <td class="mono">6183133</td>
+          <td>PERPENDICULAR</td>
+          <td>55.0 mm</td>
+          <td class="overhang-cell">745.0 / 55.0</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9813194</td>
+          <td class="mono">6183129</td>
+          <td>PERPENDICULAR</td>
+          <td>51.1 mm</td>
+          <td class="overhang-cell">1448.9 / 51.1</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">10440165</td>
+          <td class="mono">9568740</td>
+          <td>PERPENDICULAR</td>
+          <td>68.9 mm</td>
+          <td class="overhang-cell">2331.1 / 68.9</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        <tr>
+          <td class="mono">9816677</td>
+          <td class="mono">6183136</td>
+          <td>PERPENDICULAR</td>
+          <td>65.8 mm</td>
+          <td class="overhang-cell">65.8 / 334.2</td>
+          <td><span class="pill pill-pass">PASS</span></td>
+          <td class="reason-text">Overhang Min Between 50 And 90</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="footer">IFC Extractor &middot; MAIC_ROOM_02 &middot; 31 Mar 2026  23:03</div>
+</div>
+</body>
+</html>
